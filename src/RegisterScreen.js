@@ -4,10 +4,7 @@ import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
-export default function WelcomeScreen() {
-
-  const [hidePassword, setHidePassword] = useState(true)
-
+export default function RegisterScreen() {
   return (
     <>
       <Container>
@@ -15,18 +12,12 @@ export default function WelcomeScreen() {
         <h1>TrackIt</h1>
         <input type='text' placeholder='email' />
         <input type='text' placeholder='senha' />
-        <button><h1>Entrar</h1></button>
-
-        <Link to={'/cadastro'}>
-          <h2>Não tem uma conta? Cadastre-se!</h2>
+        <input type='text' placeholder='nome' />
+        <input type='text' placeholder='foto' />
+        <button><h1>Cadastrar</h1></button>
+        <Link to={'/'}>
+          <h2>Já tem uma conta? Faça login!</h2>
         </Link>
-        <div>{
-          hidePassword ?
-            <ion-icon name="eye-outline" onClick={() => setHidePassword(!hidePassword)} />
-            :
-            <ion-icon name="eye-off-outline" onClick={() => setHidePassword(!hidePassword)} />
-        }
-        </div>
       </Container>
     </>
   )
@@ -40,12 +31,7 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   
-  ion-Icon{
-    color: #52B6FF;
-    font-size: 20px;
-    cursor: pointer;
-    margin: none;
-  }
+
   h1{
     margin-top: 0px;
     font-family: 'Playball', cursive;
@@ -75,15 +61,6 @@ const Container = styled.div`
     border-radius: 5px;
     border: 1px solid #D4D4D4;
     margin-bottom: 6px;
-    font-family: Lexend Deca;
-    font-size: 20px;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 25px;
-    letter-spacing: 0em;
-    text-align: left;
-    color: #52B6FF;
-    padding-left: 10px;
   }
   input::placeholder{
     font-family: Lexend Deca;
