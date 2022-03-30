@@ -14,19 +14,30 @@ export default function WelcomeScreen() {
         <img alt='logo' src={"./logo.png"} />
         <h1>TrackIt</h1>
         <input type='text' placeholder='email' />
-        <input type='text' placeholder='senha' />
+        <input type={hidePassword ? 'password' : 'text'} placeholder='senha' />
+        <div>{
+          hidePassword ?
+            <div className='show-and-hide-password' onClick={() => setHidePassword(!hidePassword)} >
+              <h1 >
+                <ion-icon name="eye-outline" />
+                Show password
+              </h1>
+            </div>
+            :
+            <div className='show-and-hide-password' onClick={() => setHidePassword(!hidePassword)} >
+              <h1>
+                <ion-icon name="eye-off-outline" />
+                Hide password
+              </h1>
+            </div>
+        }
+        </div>
         <button><h1>Entrar</h1></button>
 
         <Link to={'/cadastro'}>
           <h2>Não tem uma conta? Cadastre-se!</h2>
         </Link>
-        <div>{
-          hidePassword ?
-            <ion-icon name="eye-outline" onClick={() => setHidePassword(!hidePassword)} />
-            :
-            <ion-icon name="eye-off-outline" onClick={() => setHidePassword(!hidePassword)} />
-        }
-        </div>
+
       </Container>
     </>
   )
@@ -45,6 +56,25 @@ const Container = styled.div`
     font-size: 20px;
     cursor: pointer;
     margin: none;
+    margin-right: 5px;
+  }
+  .show-and-hide-password{
+    margin-top: 10px;
+    cursor: pointer;
+    width: 100%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .show-and-hide-password h1{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: Lexend Deca;
+    font-size: 20px;
+    margin: none;
+    color: #52B6FF;
   }
   h1{
     margin-top: 0px;
