@@ -4,17 +4,41 @@ import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
+const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
+
 export default function WelcomeScreen() {
 
   const [hidePassword, setHidePassword] = useState(true)
+  const [login, setLogin] = useState(
+    {
+      email: '',
+      password: '',
+    }
+  )
+
+  function enterApp() {
+    axios.post(URL, login)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
 
   return (
     <>
       <Container>
         <img alt='logo' src={"./logo.png"} />
         <h1>TrackIt</h1>
-        <input type='text' placeholder='email' />
-        <input type={hidePassword ? 'password' : 'text'} placeholder='senha' />
+        <input
+          onChange={(e) => setLogin({ ...login, email: e.target.value })}
+          type='email'
+          placeholder='email'
+          value={login.email}
+        />
+        <input
+          onChange={(e) => setLogin({ ...login, password: e.target.value })}
+          type={hidePassword ? 'password' : 'text'}
+          placeholder='senha'
+          value={login.password}
+        />
         <div>{
           hidePassword ?
             <div className='show-and-hide-password' onClick={() => setHidePassword(!hidePassword)} >
@@ -32,7 +56,11 @@ export default function WelcomeScreen() {
             </div>
         }
         </div>
-        <button><h1>Entrar</h1></button>
+        <Link to={'/habitos'}>
+          <button onClick={() => enterApp()}>
+            <h1>Entrar</h1>
+          </button>
+        </Link>
 
         <Link to={'/cadastro'}>
           <h2>Não tem uma conta? Cadastre-se!</h2>
@@ -154,5 +182,4 @@ const Container = styled.div`
   img{
     width:180px;
   }
-
 `;

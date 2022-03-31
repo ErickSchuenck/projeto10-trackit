@@ -4,17 +4,58 @@ import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 
+const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up`
+
 export default function RegisterScreen() {
+
+  const [sendingApiData, setsendingApiData] = useState(false)
+  const [userData, setUserData] = useState(
+    {
+      email: "",
+      name: "",
+      image: "",
+      password: ""
+    }
+  )
+
+  function registerUserData() {
+    setsendingApiData(true)
+    axios.post(URL, userData)
+      .then(setsendingApiData(false))
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+  }
   return (
     <>
       <Container>
         <img alt='logo' src={"./logo.png"} />
         <h1>TrackIt</h1>
-        <input type='text' placeholder='email' />
-        <input type='text' placeholder='senha' />
-        <input type='text' placeholder='nome' />
-        <input type='text' placeholder='foto' />
-        <button><h1>Cadastrar</h1></button>
+        <input type='email'
+          placeholder='email'
+          onChange={(e) => setUserData({ ...userData, email: e.target.value })}
+          value={userData.email}
+        />
+        <input type='password'
+          placeholder='senha'
+          onChange={(e) => setUserData({ ...userData, password: e.target.value })}
+          value={userData.password}
+        />
+        <input type='text' placeholder='nome'
+          onChange={(e) => setUserData({ ...userData, name: e.target.value })}
+          value={userData.name}
+        />
+        <input type='url'
+          placeholder='foto de perfil'
+          onChange={(e) => setUserData({ ...userData, image: e.target.value })}
+          value={userData.image}
+        />
+        {sendingApiData ?
+          <div>teste</div>
+          :
+          <button onClick={() => registerUserData()}>
+            <h1>Cadastrar</h1>
+          </button>
+        }
         <Link to={'/'}>
           <h2>Já tem uma conta? Faça login!</h2>
         </Link>
