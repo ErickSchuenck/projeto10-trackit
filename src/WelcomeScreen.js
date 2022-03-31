@@ -3,12 +3,24 @@ import styled from 'styled-components';
 import { useState, useEffect } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
+import { Bars } from 'react-loader-spinner'
+
 
 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
 
 export default function WelcomeScreen() {
 
   const [hidePassword, setHidePassword] = useState(true)
+  const [data, setData] = useState(
+    {
+      email: '',
+      id: 0,
+      image: '',
+      name: '',
+      password: '',
+      token: ''
+    }
+  )
   const [login, setLogin] = useState(
     {
       email: '',
@@ -19,6 +31,7 @@ export default function WelcomeScreen() {
   function enterApp() {
     axios.post(URL, login)
       .then(response => console.log(response))
+      // .then(window.open('/habitos', '_self'))
       .catch(error => console.log(error))
   }
 
@@ -56,16 +69,14 @@ export default function WelcomeScreen() {
             </div>
         }
         </div>
-        <Link to={'/habitos'}>
-          <button onClick={() => enterApp()}>
-            <h1>Entrar</h1>
-          </button>
-        </Link>
+        <button onClick={() => enterApp()}>
+          <h1>Entrar</h1>
+        </button>
 
         <Link to={'/cadastro'}>
           <h2>Não tem uma conta? Cadastre-se!</h2>
         </Link>
-
+        {/* <Bars></Bars> */}
       </Container>
     </>
   )
@@ -168,6 +179,7 @@ const Container = styled.div`
     background-color: #52B6FF;
     border-radius: 4.63636px;
     margin-bottom: 36px;
+    text-decoration: none;
   }
   button h1{
     font-family: 'Lexend Deca', sans-serif;
