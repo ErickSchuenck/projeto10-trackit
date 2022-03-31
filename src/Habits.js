@@ -44,15 +44,16 @@ const HabitsList = styled.div`
   height: 100vh;
   margin-top: 140px;
   overflow-x: none;
+  background-color: #E5E5E5;
 
   .my-habits{
-    z-index: -1;
-    margin-top: 168px;
     width: 100vw;
     display: flex;
-    justify-content: space-between;
     align-items: center;
     margin-bottom: 28px;
+    justify-content: space-between;
+    padding-top: 20px;
+    padding-right: 30px;
   }
   .my-habits h1{
     margin-left: 17px;
@@ -65,10 +66,8 @@ const HabitsList = styled.div`
     color: #126BA5;
   }
   .my-habits ion-icon{
-    z-index: -1;
     color: #52B6FF;
     font-size: 40px;
-    margin-right: 18px;
     cursor: pointer;
   }
   .i-dont-have-any-habits{
