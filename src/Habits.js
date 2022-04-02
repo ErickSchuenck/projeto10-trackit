@@ -1,50 +1,51 @@
 import React, { useState } from 'react'
 import styled from 'styled-components';
 
-
+const weekdaysDefault = [
+  {
+    name: 'sunday',
+    initialLetter: 'D',
+    isSelected: false,
+  },
+  {
+    name: 'monday',
+    initialLetter: 'S',
+    isSelected: false,
+  },
+  {
+    name: 'tuesday',
+    initialLetter: 'T',
+    isSelected: false,
+  },
+  {
+    name: 'wednesday',
+    initialLetter: 'Q',
+    isSelected: false,
+  },
+  {
+    name: 'thursday',
+    initialLetter: 'Q',
+    isSelected: false,
+  },
+  {
+    name: 'friday',
+    initialLetter: 'S',
+    isSelected: false,
+  },
+  {
+    name: 'saturday',
+    initialLetter: 'S',
+    isSelected: false,
+  }
+];
 
 
 export default function Habits({ habits }) {
+  const [weekdays, setWeekdays] = useState(weekdaysDefault)
 
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
 
-  const weekdays = [
-    {
-      name: 'sunday',
-      initialLetter: 'D',
-      isSelected: false,
-    },
-    {
-      name: 'monday',
-      initialLetter: 'S',
-      isSelected: false,
-    },
-    {
-      name: 'tuesday',
-      initialLetter: 'T',
-      isSelected: false,
-    },
-    {
-      name: 'wednesday',
-      initialLetter: 'Q',
-      isSelected: false,
-    },
-    {
-      name: 'thursday',
-      initialLetter: 'Q',
-      isSelected: false,
-    },
-    {
-      name: 'friday',
-      initialLetter: 'S',
-      isSelected: false,
-    },
-    {
-      name: 'saturday',
-      initialLetter: 'S',
-      isSelected: false,
-    }
-  ];
+
   const myHabits = [
     {
       title: 'fazer o projetão driven',
@@ -52,10 +53,11 @@ export default function Habits({ habits }) {
     }
   ]
 
-  function selectDay(day) {
-    console.log('day is bein selected')
-    day.isSelected = true;
-    console.log(weekdays);
+  function selectDay(idx) {
+    setWeekdays(weekdays => {
+      weekdays[idx].isSelected = !weekdays[idx].isSelected
+      return [...weekdays]
+    })
   }
 
   if (habits.length === 0) {
@@ -75,17 +77,34 @@ export default function Habits({ habits }) {
             <div className='create-new-habit-container'>
               <input type={'text'} placeholder={'nome do hábito'} />
               <div className='week'>
-                {weekdays.map(day =>
-                  <>
-                    {
-                      <div className='week-days' onClick={() => selectDay(day)}>
-                        <h1>
-                          {day.initialLetter}
-                        </h1>
-                      </div>
-                    }
+                {weekdays.map((day, idx) =>
+                  <>{day.isSelected ?
+                    <div className='week-days selected' onClick={() => selectDay(idx)}>
+                      <h1>
+                        {day.initialLetter}
+                      </h1>
+                    </div>
+                    :
+                    <div className='week-days' onClick={() => selectDay(idx)}>
+                      <h1>
+                        {day.initialLetter}
+                      </h1>
+                    </div>
+                  }
                   </>
                 )}
+              </div>
+              <div className='lower-create-habit-container'>
+                <h1
+                  onClick={() => setCreateNewHabitContainer(!createNewHabitContainer)}
+                >
+                  Cancelar
+                </h1>
+                <button>
+                  <h1>
+                    Salvar
+                  </h1>
+                </button>
               </div>
             </div>
             :
@@ -129,6 +148,7 @@ const HabitsList = styled.div`
     margin-left: 18px;
     background-color: #fff;
     border-radius: 6px;
+    position: relative;
   }
   .week {
     display: flex;
@@ -232,5 +252,44 @@ const HabitsList = styled.div`
   }
   .selected h1{
     color: #fff;
+  }
+  .lower-create-habit-container{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    bottom: 16px;
+    right: 16px;
+  }
+  .lower-create-habit-container h1{
+    color:  #52B6FF;
+    font-family: 'Lexend Deca';
+    font-style: normal;
+    font-weight: 400;
+    font-size: 16px;
+    line-height: 20px;
+    margin-right: 22px;
+    cursor: pointer;
+  }
+  .lower-create-habit-container button{
+    width: 84px;
+    height: 35px;
+    background-color: #52B6FF;
+    border-radius: 4px;
+    cursor: pointer;
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .lower-create-habit-container button h1{
+    margin: 0;
+    font-family: Lexend Deca;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 20px;
+    letter-spacing: 0em;
+    text-align: center;
+    color: #FFFFFF;
   }
 `
