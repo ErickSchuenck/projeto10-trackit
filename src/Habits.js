@@ -42,16 +42,13 @@ const weekdaysDefault = [
 
 export default function Habits({ habits }) {
   const [weekdays, setWeekdays] = useState(weekdaysDefault)
-
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
+  const [myHabits, setmyHabits] = useState([])
 
+  function saveHabit() {
+    console.log(myHabits)
 
-  const myHabits = [
-    {
-      title: 'fazer o projetão driven',
-      days: ['sunday', 'monday', 'tuesday', 'wednesday']
-    }
-  ]
+  }
 
   function selectDay(idx) {
     setWeekdays(weekdays => {
@@ -60,7 +57,7 @@ export default function Habits({ habits }) {
     })
   }
 
-  if (habits.length === 0) {
+  if (myHabits.length === 0) {
     return (
       <HabitsList>
         <>
@@ -79,7 +76,7 @@ export default function Habits({ habits }) {
               <div className='week'>
                 {weekdays.map((day, idx) =>
                   <>{day.isSelected ?
-                    <div className='week-days selected' onClick={() => selectDay(idx)}>
+                    <div id={day.name} className='week-days selected' onClick={() => selectDay(idx)}>
                       <h1>
                         {day.initialLetter}
                       </h1>
@@ -101,7 +98,7 @@ export default function Habits({ habits }) {
                   Cancelar
                 </h1>
                 <button>
-                  <h1>
+                  <h1 onClick={() => saveHabit()}>
                     Salvar
                   </h1>
                 </button>
@@ -137,7 +134,7 @@ export default function Habits({ habits }) {
 const HabitsList = styled.div`
   width: 100vw;
   height: 100vh;
-  margin-top: 140px;
+  margin-top: 70px;
   overflow-x: none;
   background-color: #E5E5E5;
 
