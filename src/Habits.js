@@ -43,11 +43,17 @@ const weekdaysDefault = [
 export default function Habits({ habits }) {
   const [weekdays, setWeekdays] = useState(weekdaysDefault)
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
-  const [myHabits, setmyHabits] = useState([])
+  const [myHabits, setMyHabits] = useState([])
+  const [nameOfTheHabit, setNameOfTheHabit] = useState('')
 
   function saveHabit() {
-    console.log(myHabits)
-
+    console.log('before', myHabits)
+    setMyHabits(
+      ...{
+        name: nameOfTheHabit,
+      }
+    )
+    console.log('after', myHabits)
   }
 
   function selectDay(idx) {
@@ -72,7 +78,7 @@ export default function Habits({ habits }) {
           </div>
           {createNewHabitContainer === true ?
             <div className='create-new-habit-container'>
-              <input type={'text'} placeholder={'nome do hábito'} />
+              <input type={'text'} placeholder={'nome do hábito'} onChange={e => setNameOfTheHabit(e.target.value)} />
               <div className='week'>
                 {weekdays.map((day, idx) =>
                   <>{day.isSelected ?
@@ -123,8 +129,49 @@ export default function Habits({ habits }) {
             <h1>
               Meus Hábitos
             </h1>
-            <ion-icon name="add-circle"></ion-icon>
+            <ion-icon
+              name="add-circle"
+              onClick={() => setCreateNewHabitContainer(!createNewHabitContainer)}
+            />
           </div>
+          {createNewHabitContainer === true ?
+            <div className='create-new-habit-container'>
+              <input type={'text'} placeholder={'nome do hábito'} onChange={e => setNameOfTheHabit(e.target.value)} />
+              <div className='week'>
+                {weekdays.map((day, idx) =>
+                  <>{day.isSelected ?
+                    <div id={day.name} className='week-days selected' onClick={() => selectDay(idx)}>
+                      <h1>
+                        {day.initialLetter}
+                      </h1>
+                    </div>
+                    :
+                    <div className='week-days' onClick={() => selectDay(idx)}>
+                      <h1>
+                        {day.initialLetter}
+                      </h1>
+                    </div>
+                  }
+                  </>
+                )}
+              </div>
+              <div className='lower-create-habit-container'>
+                <h1
+                  onClick={() => setCreateNewHabitContainer(!createNewHabitContainer)}
+                >
+                  Cancelar
+                </h1>
+                <button>
+                  <h1 onClick={() => saveHabit()}>
+                    Salvar
+                  </h1>
+                </button>
+              </div>
+            </div>
+            :
+            <></>
+          }
+          {/* {myHabits.map(habit => <div><h1>teste</h1></div>)} */}
         </>
       </HabitsList>
     )
