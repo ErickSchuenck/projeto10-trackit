@@ -39,7 +39,7 @@ export default function Footer() {
               textColor: '#fff',
               trailColor: '#52B6FF',
               backgroundColor: '#3e98c7',
-            })} />;
+            })} />
 
       </div>
       <h1 onClick={() => window.open('/historico', '_self')}>Historico</h1>

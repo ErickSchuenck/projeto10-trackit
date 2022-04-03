@@ -1,3 +1,4 @@
+import axios from 'axios';
 import React, { useState } from 'react'
 import styled from 'styled-components';
 
@@ -6,36 +7,43 @@ const weekdaysDefault = [
     name: 'sunday',
     initialLetter: 'D',
     isSelected: false,
+    number: 0
   },
   {
     name: 'monday',
     initialLetter: 'S',
     isSelected: false,
+    number: 1
   },
   {
     name: 'tuesday',
     initialLetter: 'T',
     isSelected: false,
+    number: 2
   },
   {
     name: 'wednesday',
     initialLetter: 'Q',
     isSelected: false,
+    number: 3
   },
   {
     name: 'thursday',
     initialLetter: 'Q',
     isSelected: false,
+    number: 4
   },
   {
     name: 'friday',
     initialLetter: 'S',
     isSelected: false,
+    number: 5
   },
   {
     name: 'saturday',
     initialLetter: 'S',
     isSelected: false,
+    number: 6
   }
 ];
 
@@ -45,17 +53,24 @@ export default function Habits({ habits }) {
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
   const [myHabits, setMyHabits] = useState([])
   const [nameOfTheHabit, setNameOfTheHabit] = useState('')
+  const [myNewHabit, setMyNewHabit] = useState({})
+
 
   function saveHabit() {
-    console.log('before', myHabits)
-    setMyHabits(
-      ...{
-        name: nameOfTheHabit,
-        weekdays: weekdays,
-      }
-    )
-    console.log('after', myHabits)
+    setMyNewHabit({
+      name: `${nameOfTheHabit}`,
+      days: [0, 1, 2, 3, 4, 5, 6]
+    })
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit)
+      .then(response => {
+        console.log('response', response)
+      })
 
+      .catch(error => {
+        console.log(error);
+        alert("Erro de envio ☹ algo está dando errado");
+      }
+      )
   }
 
   function selectDay(idx) {
@@ -63,7 +78,6 @@ export default function Habits({ habits }) {
       weekdays[idx].isSelected = !weekdays[idx].isSelected
       console.log(weekdays)
       return [...weekdays]
-
     })
   }
 
@@ -193,7 +207,8 @@ const HabitsList = styled.div`
     margin-bottom: 29px;
     width: 340px;
     height: 180px;
-    margin-left: 18px;
+    margin-left: 50%;
+    transform: translate(-50%,0);
     background-color: #fff;
     border-radius: 6px;
     position: relative;
