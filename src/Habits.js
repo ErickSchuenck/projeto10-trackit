@@ -57,15 +57,22 @@ export default function Habits({ habits }) {
 
 
   function saveHabit() {
+    let newHabitDays = []
+    weekdays.forEach((day) => { if (day.isSelected === true) newHabitDays.push(day.number) })
     setMyNewHabit({
       name: `${nameOfTheHabit}`,
-      days: [0, 1, 2, 3, 4, 5, 6]
+      days: newHabitDays,
     })
-    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit)
+    console.log('aqui', newHabitDays)
+    const config = {
+      headers: {
+        Authorization: `Bearer ${'AQUI DEVE ENTRAR A TOKEN'}`,
+      }
+    }
+    axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit, config)
       .then(response => {
         console.log('response', response)
       })
-
       .catch(error => {
         console.log(error);
         alert("Erro de envio ☹ algo está dando errado");
