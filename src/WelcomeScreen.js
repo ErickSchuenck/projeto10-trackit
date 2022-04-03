@@ -1,15 +1,16 @@
 import React from 'react'
 import styled from 'styled-components';
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useContext } from 'react'
 import { Link } from "react-router-dom";
 import axios from 'axios'
 import { Bars } from 'react-loader-spinner'
-
+import UserDataContext from './context/UserDataContext';
 
 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
 
 export default function WelcomeScreen() {
 
+  const [context, setContext] = useContext(UserDataContext);
   const [hidePassword, setHidePassword] = useState(true)
   const [data, setData] = useState(
     {
@@ -30,9 +31,16 @@ export default function WelcomeScreen() {
 
   function enterApp() {
     axios.post(URL, login)
-      .then(response => console.log(response))
-      // .then(window.open('/habitos', '_self'))
+      .then(response => {
+        console.log('response', response)
+        setData(response.data);
+        console.log('data', data);
+        setContext(response.data)
+        console.log('context', context)
+      })
+      .then(window.open('/habitos', '_self'))
       .catch(error => console.log(error))
+
   }
 
   return (

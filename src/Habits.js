@@ -51,15 +51,19 @@ export default function Habits({ habits }) {
     setMyHabits(
       ...{
         name: nameOfTheHabit,
+        weekdays: weekdays,
       }
     )
     console.log('after', myHabits)
+
   }
 
   function selectDay(idx) {
     setWeekdays(weekdays => {
       weekdays[idx].isSelected = !weekdays[idx].isSelected
+      console.log(weekdays)
       return [...weekdays]
+
     })
   }
 

@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
@@ -6,8 +7,9 @@ import styled from 'styled-components';
 export default function Footer() {
   return (
     <ProgressBar>
-      <h1>Habitos</h1>
-      <div className='circle'>
+      <h1 onClick={() => window.open('/habitos', '_self')}>Habitos</h1>
+      <div className='circle' onClick={() => window.open('/hoje', '_self')}>
+
         <CircularProgressbar
           value={60}
           text={`Hoje`}
@@ -38,8 +40,9 @@ export default function Footer() {
               trailColor: '#52B6FF',
               backgroundColor: '#3e98c7',
             })} />;
+
       </div>
-      <h1>Historico</h1>
+      <h1 onClick={() => window.open('/historico', '_self')}>Historico</h1>
     </ProgressBar>
   )
 }
