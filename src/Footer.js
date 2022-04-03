@@ -77,6 +77,7 @@ const ProgressBar = styled.div`
     border-radius: 50%;
     bottom: 10px;
     padding: 6px;
+    cursor: pointer;
   }
 
    

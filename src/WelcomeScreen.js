@@ -37,10 +37,14 @@ export default function WelcomeScreen() {
         console.log('data', data);
         setContext(response.data)
         console.log('context', context)
+        window.open('/habitos', '_self')
       })
-      .then(window.open('/habitos', '_self'))
-      .catch(error => console.log(error))
 
+      .catch(error => {
+        console.log(error);
+        alert("Erro de login, favor checar novamente os dados. Se não possui uma conta, experimente se cadastrar antes!");
+      }
+      )
   }
 
   return (
