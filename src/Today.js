@@ -10,8 +10,6 @@ import axios from 'axios'
 
 export default function Today() {
 
-  const [habits, setHabits] = useState([])
-
   return (
     <>
       <Header />

@@ -54,10 +54,16 @@ export default function Habits({ habits }) {
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
   const [myHabits, setMyHabits] = useState([])
   const [nameOfTheHabit, setNameOfTheHabit] = useState('')
-  const [myNewHabit, setMyNewHabit] = useState({})
+  // const [myNewHabit, setMyNewHabit] = useState({})
   const userData = JSON.parse(localStorage.getItem('login'))
 
-
+  function reloadHabits(config) {
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
+      .then(response => {
+        const { data } = response;
+        setMyHabits(data);
+      });
+  }
 
   useEffect(() => {
     if (!userData) { return }
@@ -66,21 +72,17 @@ export default function Habits({ habits }) {
         Authorization: `Bearer ${userData}`
       }
     }
-    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
-      .then(response => {
-        const { data } = response;
-        setMyHabits(data);
-      });
+    reloadHabits(config)
     console.log(myHabits)
   }, [userData])
 
   function saveHabit() {
     let newHabitDays = []
     weekdays.forEach((day) => { if (day.isSelected === true) newHabitDays.push(day.number) })
-    setMyNewHabit({
+    const myNewHabit = {
       name: `${nameOfTheHabit}`,
       days: newHabitDays,
-    })
+    }
     console.log('aqui', newHabitDays)
     console.log('o que está sendo enviado', myNewHabit)
     const config = {
@@ -98,6 +100,7 @@ export default function Habits({ habits }) {
         alert("Erro de envio ☹ algo está dando errado");
       }
       )
+    reloadHabits(config)
   }
 
   function selectDay(idx) {
@@ -108,7 +111,21 @@ export default function Habits({ habits }) {
     })
   }
 
-
+  function deleteHabit(habitId) {
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData}`,
+      }
+    }
+    axios.delete(`
+https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}
+`, config)
+      .then(response => console.log(response),
+        alert('seu hábito foi deletado'))
+      .catch(error => console.log(error),
+    )
+    reloadHabits(config)
+  }
 
   if (myHabits.length === 0) {
     return (
@@ -220,10 +237,20 @@ export default function Habits({ habits }) {
           }
           {
             myHabits.map((habit, index) =>
-              <div key={index} className='my-habits-container'>
-                <h1>
-                  {habit.name}
-                </h1>
+              <div key={habit.id} className='my-habits-container'>
+                <div className='habit-name-container'>
+                  <h1>
+                    {habit.name}
+                  </h1>
+                </div>
+                <div className='week'>
+                  {habit.days.map(number => <div className='week-days selected'>
+                    <h1>
+                      {weekdaysDefault[number].initialLetter}
+                    </h1>
+                  </div>)}
+                </div>
+                <ion-icon name="trash-outline" onClick={() => deleteHabit(habit.id)} />
               </div>)
           }
           <div className='footer-decoy' />
@@ -240,6 +267,7 @@ const HabitsList = styled.div`
   overflow-x: none;
   background-color: #E5E5E5;
 
+
   .my-habits-container{
     width: 340px;
     height: 91px;
@@ -248,6 +276,13 @@ const HabitsList = styled.div`
     margin-left: 50%;
     transform: translate(-50%,0);
     margin-bottom: 10px;
+    position: relative;
+  }
+  .my-habits-container ion-icon{
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    cursor: pointer;
   }
   .my-habits-container h1{
     padding-left: 14px;
@@ -258,6 +293,12 @@ const HabitsList = styled.div`
     line-height: 25px;
     letter-spacing: 0em;
     text-align: left;
+  }
+  .habit-name-container{
+    margin-bottom: 10px;
+  }
+  .habit-name-container h1{
+    color: #666666;
   }
   .create-new-habit-container{
     margin-bottom: 29px;
@@ -295,6 +336,7 @@ const HabitsList = styled.div`
     letter-spacing: 0em;
     text-align: center;
     color: #DBDBDB;
+    padding: 0;
   }
   .create-new-habit-container input{
     width: 90%;

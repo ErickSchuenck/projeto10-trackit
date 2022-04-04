@@ -1,11 +1,26 @@
-import React from 'react'
+import { React, useState } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
+import axios from 'axios';
 
 export default function Footer() {
+
+  const [progress, setprogress] = useState(0)
   const navigate = useNavigate()
+  function todayProgress() {
+    const userData = JSON.parse(localStorage.getItem('login'))
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData}`
+      }
+    }
+
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
+      .then(response => setprogress(response))
+    console.log('PROGRESSSSSSOOOO', progress)
+  }
 
   return (
 
@@ -14,7 +29,7 @@ export default function Footer() {
       <div className='circle' onClick={() => navigate('/hoje')}>
 
         <CircularProgressbar
-          value={60}
+          value={progress.length}
           text={`Hoje`}
           styles={
             buildStyles({

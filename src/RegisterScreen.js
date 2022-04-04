@@ -1,7 +1,7 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useState, useEffect } from 'react'
-import { Link } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import axios from 'axios'
 
 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/sign-up`
@@ -17,12 +17,14 @@ export default function RegisterScreen() {
       password: ""
     }
   )
-
+  const navigate = useNavigate()
   function registerUserData() {
     setsendingApiData(true)
     axios.post(URL, userData)
       .then(setsendingApiData(false))
-      .then(response => console.log(response))
+      .then(response => console.log(response),
+        navigate('/')
+      )
       .catch(error => console.log(error))
   }
   return (

@@ -9,15 +9,20 @@ export default function TodayHabits() {
   const userData = JSON.parse(localStorage.getItem('login'))
   let now = dayjs();
   console.log(now.format('DD/MM/YYYY'));
+  const config = {
+    headers: {
+      Authorization: `Bearer ${userData}`
+    }
+  }
+  const [todayHabits, setTodayHabits] = useState([])
 
-  const [todayHabits, setTodayHabits] = useState({})
+  function markAsDone(habitId) {
+    console.log('markin habit', habitId)
+    axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
+      }/check`, config)
+  }
 
   useEffect(() => {
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userData}`
-      }
-    }
     axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
       .then((response) => {
         const { data } = response;
@@ -40,31 +45,23 @@ export default function TodayHabits() {
         </div>
 
         <MyHabitsMap />
-
-        {/* <div className='habit-box'>
-          <div className='checkbox-info'>
-            <h1>Ler 1 capítulo de livro</h1>
-            <h2>Sequência atual: 4 dias</h2>
-            <h2>Seu recorde: 5 dias</h2>
-          </div>
-          <div className='checkbox' >
-            <ion-icon name="checkmark-outline" />
-          </div>
-        </div> */}
       </HabitsList>
     </>
   )
 
   function MyHabitsMap() {
+    console.log('today map', todayHabits)
     if (todayHabits.length !== 0) {
       return (todayHabits.map(habit =>
-        <div className='habit-box'>
+        <div key={habit.id} className='habit-box'>
           <div className='checkbox-info'>
             <h1>{habit.name}</h1>
             <h2>Sequência atual: {habit.currentSequence}</h2>
             <h2>Seu recorde: {habit.highestSequence}</h2>
           </div>
-          <div className='checkbox' >
+          <div className={`checkbox ${habit.done ? 'selected' : ''}`}
+            onClick={() => markAsDone(habit.id)}
+          >
             <ion-icon name="checkmark-outline" />
           </div>
         </div>
@@ -80,14 +77,14 @@ const HabitsList = styled.div`
         background-color: #E7E7E7;
 
         .date{
-          padding - top: 28px;
+          padding-top: 28px;
         padding-bottom: 28px;
         margin-left: 50%;
         transform: translate(-50%,0);
         width: 340px;
   }
         .date h1{
-          font - family: Lexend Deca;
+          font-family: Lexend Deca;
         font-size: 23px;
         font-weight: 400;
         line-height: 29px;
@@ -96,7 +93,7 @@ const HabitsList = styled.div`
         color: #126BA5;
   }
         .date h2{
-          font - family: Lexend Deca;
+          font-family: Lexend Deca;
         font-size: 18px;
         font-weight: 400;
         line-height: 22px;
@@ -106,13 +103,14 @@ const HabitsList = styled.div`
   }
 
         .habit-box{
-          background - color: #fff;
+          background-color: #fff;
         width: 340px;
         height: 94px;
         border-radius: 5px;
         margin-left: 50%;
         transform: translate(-50%,0);
         position: relative;
+        margin-bottom: 10px;
   }
         .checkbox{
           width: 69px;
@@ -129,7 +127,7 @@ const HabitsList = styled.div`
         cursor: pointer;
   }
         .checkbox ion-icon{
-          font - size: 65px;
+          font-size: 65px;
         color: #fff;
   }
         .checkbox-info{
@@ -142,7 +140,7 @@ const HabitsList = styled.div`
         flex-direction: column;
   }
         .checkbox-info h1{
-          font - family: Lexend Deca;
+          font-family: Lexend Deca;
         font-size: 20px;
         font-weight: 400;
         line-height: 25px;
@@ -151,7 +149,7 @@ const HabitsList = styled.div`
         color: #666666;
   }
         .checkbox-info h2{
-          font - family: 'Lexend Deca';
+          font-family: 'Lexend Deca';
         font-style: normal;
         font-weight: 400;
         font-size: 12.976px;
@@ -159,6 +157,6 @@ const HabitsList = styled.div`
         color: #666666;
   }
         .selected{
-          background - color: #8FC549;
+          background-color: #8FC549;
   }
         `
