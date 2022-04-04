@@ -217,17 +217,13 @@ export default function Habits({ habits }) {
             :
             <></>
           }
-          {myHabits.map((habit, index) =>
-            <div key={index} className='my-habits-container'>
-              <h1>
-                {habit.name}
-              </h1>
-              {
-                habit.days.map(day => {
-                  <div>DOMINGO</div>
-                })
-              }
-            </div>)
+          {
+            myHabits.map((habit, index) =>
+              <div key={index} className='my-habits-container'>
+                <h1>
+                  {habit.name}
+                </h1>
+              </div>)
           }
         </>
       </HabitsList>
