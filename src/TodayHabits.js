@@ -25,7 +25,6 @@ export default function TodayHabits() {
   }
 
   function markAsDone(habitId) {
-    console.log('markin habit', habitId)
     axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
       }/check`, {}, config)
       .then(response => console.log(response))
@@ -34,7 +33,6 @@ export default function TodayHabits() {
   }
 
   function markAsUndone(habitId) {
-    console.log('markin habit', habitId)
     axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
       }/uncheck`, {}, config)
       .then(response => console.log(response))

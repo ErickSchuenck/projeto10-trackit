@@ -7,20 +7,8 @@ import axios from 'axios';
 
 export default function Footer() {
 
-  const [progress, setprogress] = useState(0)
   const navigate = useNavigate()
-  function todayProgress() {
-    const userData = JSON.parse(localStorage.getItem('login'))
-    const config = {
-      headers: {
-        Authorization: `Bearer ${userData}`
-      }
-    }
 
-    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
-      .then(response => setprogress(response))
-    console.log('PROGRESSSSSSOOOO', progress)
-  }
 
   return (
 

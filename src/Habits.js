@@ -54,7 +54,7 @@ export default function Habits({ habits }) {
   const [createNewHabitContainer, setCreateNewHabitContainer] = useState(false)
   const [myHabits, setMyHabits] = useState([])
   const [nameOfTheHabit, setNameOfTheHabit] = useState('')
-  // const [myNewHabit, setMyNewHabit] = useState({})
+  const daysSymbol = ["D", "S", "T", "Q", "Q", "S", "S"];
   const userData = JSON.parse(localStorage.getItem('login'))
 
   function reloadHabits(config) {
@@ -63,6 +63,7 @@ export default function Habits({ habits }) {
         const { data } = response;
         setMyHabits(data);
       });
+    console.log('reloading data')
   }
 
   useEffect(() => {
@@ -73,7 +74,6 @@ export default function Habits({ habits }) {
       }
     }
     reloadHabits(config)
-    console.log(myHabits)
   }, [userData])
 
   function saveHabit() {
@@ -83,8 +83,6 @@ export default function Habits({ habits }) {
       name: `${nameOfTheHabit}`,
       days: newHabitDays,
     }
-    console.log('aqui', newHabitDays)
-    console.log('o que está sendo enviado', myNewHabit)
     const config = {
       headers: {
         Authorization: `Bearer ${userData}`,
@@ -106,7 +104,6 @@ export default function Habits({ habits }) {
   function selectDay(idx) {
     setWeekdays(weekdays => {
       weekdays[idx].isSelected = !weekdays[idx].isSelected
-      console.log(weekdays)
       return [...weekdays]
     })
   }
@@ -244,11 +241,15 @@ https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId}
                   </h1>
                 </div>
                 <div className='week'>
-                  {habit.days.map(number => <div className='week-days selected'>
-                    <h1>
-                      {weekdaysDefault[number].initialLetter}
-                    </h1>
-                  </div>)}
+                  {
+                    daysSymbol.map((day, index) =>
+                      <div className={habit.days.includes(index) ? 'week-days selected' : 'week-days '}>
+                        <h1>
+                          {day}
+                        </h1>
+                      </div>
+                    )
+                  }
                 </div>
                 <ion-icon name="trash-outline" onClick={() => deleteHabit(habit.id)} />
               </div>)
