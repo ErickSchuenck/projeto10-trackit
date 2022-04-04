@@ -1,14 +1,17 @@
 import React from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { CircularProgressbar, buildStyles } from 'react-circular-progressbar';
 import 'react-circular-progressbar/dist/styles.css';
 import styled from 'styled-components';
 
 export default function Footer() {
+  const navigate = useNavigate()
+
   return (
-    <ProgressBar>
-      <h1 onClick={() => window.open('/habitos', '_self')}>Habitos</h1>
-      <div className='circle' onClick={() => window.open('/hoje', '_self')}>
+
+    < ProgressBar >
+      <h1 onClick={() => navigate('/habitos')}>Habitos</h1>
+      <div className='circle' onClick={() => navigate('/hoje')}>
 
         <CircularProgressbar
           value={60}
@@ -43,7 +46,7 @@ export default function Footer() {
         />
 
       </div>
-      <h1 onClick={() => window.open('/historico', '_self')}>Historico</h1>
+      <h1 onClick={() => navigate('/historico')}>Historico</h1>
     </ProgressBar>
   )
 }
