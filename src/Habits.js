@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import styled from 'styled-components';
 import UserDataContext from './context/UserDataContext';
 
@@ -58,6 +58,22 @@ export default function Habits({ habits }) {
   const userData = JSON.parse(localStorage.getItem('login'))
 
 
+
+  useEffect(() => {
+    if (!userData) { return }
+    const config = {
+      headers: {
+        Authorization: `Bearer ${userData}`
+      }
+    }
+    axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', config)
+      .then(response => {
+        const { data } = response;
+        setMyHabits(data);
+      });
+    console.log(myHabits)
+  }, [myHabits, userData])
+
   function saveHabit() {
     let newHabitDays = []
     weekdays.forEach((day) => { if (day.isSelected === true) newHabitDays.push(day.number) })
@@ -69,7 +85,7 @@ export default function Habits({ habits }) {
     console.log('o que está sendo enviado', myNewHabit)
     const config = {
       headers: {
-        Authorization: `Bearer ${userData.token}`,
+        Authorization: `Bearer ${userData}`,
       }
     }
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit, config)
@@ -91,6 +107,8 @@ export default function Habits({ habits }) {
     })
   }
 
+
+
   if (myHabits.length === 0) {
     return (
       <HabitsList>
@@ -98,9 +116,6 @@ export default function Habits({ habits }) {
           <div className='my-habits'>
             <h1>
               Meus Hábitos
-              <UserDataContext.Consumer>
-                {value => <>1{value.userContext.name}2</>}
-              </UserDataContext.Consumer>
             </h1>
             <ion-icon
               name="add-circle"
@@ -202,7 +217,7 @@ export default function Habits({ habits }) {
             :
             <></>
           }
-          {/* {myHabits.map(habit => <div><h1>teste</h1></div>)} */}
+          {myHabits.map(habit => <div><h1>teste</h1></div>)}
         </>
       </HabitsList>
     )
