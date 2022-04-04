@@ -72,7 +72,7 @@ export default function Habits({ habits }) {
         setMyHabits(data);
       });
     console.log(myHabits)
-  }, [myHabits, userData])
+  }, [userData])
 
   function saveHabit() {
     let newHabitDays = []
@@ -217,7 +217,18 @@ export default function Habits({ habits }) {
             :
             <></>
           }
-          {myHabits.map(habit => <div><h1>teste</h1></div>)}
+          {myHabits.map((habit, index) =>
+            <div key={index} className='my-habits-container'>
+              <h1>
+                {habit.name}
+              </h1>
+              {
+                habit.days.map(day => {
+                  <div>DOMINGO</div>
+                })
+              }
+            </div>)
+          }
         </>
       </HabitsList>
     )
@@ -226,11 +237,30 @@ export default function Habits({ habits }) {
 
 const HabitsList = styled.div`
   width: 100vw;
-  height: 100vh;
+  height: 100%;
   margin-top: 70px;
   overflow-x: none;
   background-color: #E5E5E5;
 
+  .my-habits-container{
+    width: 340px;
+    height: 91px;
+    background: #FFFFFF;
+    border-radius: 5px;
+    margin-left: 50%;
+    transform: translate(-50%,0);
+    margin-bottom: 10px;
+  }
+  .my-habits-container h1{
+    padding-left: 14px;
+    padding-top: 14px;
+    font-family: Lexend Deca;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 25px;
+    letter-spacing: 0em;
+    text-align: left;
+  }
   .create-new-habit-container{
     margin-bottom: 29px;
     width: 340px;

@@ -5,7 +5,6 @@ import UserDataContext from './context/UserDataContext';
 
 export default function Header() {
   const { userContext } = useContext(UserDataContext)
-  console.log('user context object', userContext)
 
   return (
     <HeaderBar>

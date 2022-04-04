@@ -3,14 +3,16 @@ import styled from 'styled-components';
 import { useState, useEffect, useContext } from 'react'
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
-import { Bars } from 'react-loader-spinner'
+import { Grid } from 'react-loader-spinner'
 import UserDataContext from './context/UserDataContext';
 
 
 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
 
+
 export default function WelcomeScreen() {
 
+  const [loading, setLoading] = useState(false)
   const [hidePassword, setHidePassword] = useState(true)
   const [data, setData] = useState(
     {
@@ -31,6 +33,7 @@ export default function WelcomeScreen() {
   )
   const navigate = useNavigate()
   function enterApp() {
+    setLoading(true)
     axios.post(URL, login)
       .then(response => {
         console.log('response', response)
@@ -41,6 +44,7 @@ export default function WelcomeScreen() {
       })
 
       .catch(error => {
+        setLoading(false)
         console.log(error);
         alert("Erro de login, favor checar novamente os dados. Se não possui uma conta, experimente se cadastrar antes!");
       }
@@ -81,18 +85,34 @@ export default function WelcomeScreen() {
             </div>
         }
         </div>
-        <button onClick={() => enterApp()}>
-          <h1>Entrar</h1>
-        </button>
+
+        <Button loading={loading} enterApp={enterApp} />
 
 
         <Link to={'/cadastro'}>
           <h2>Não tem uma conta? Cadastre-se!</h2>
         </Link>
-        {/* <Bars></Bars> */}
+
       </Container>
     </>
   )
+}
+
+function Button({ enterApp, loading }) {
+  if (!loading) {
+    return (
+      <button onClick={() => enterApp()}>
+        <h1>Entrar</h1>
+      </button>
+    )
+  } else {
+    console.log('pegou')
+    return (
+      <div className='loading-container'>
+        <Grid />
+      </div>
+    )
+  }
 }
 
 const Container = styled.div`
@@ -103,6 +123,11 @@ const Container = styled.div`
   justify-content: center;
   align-items: center;
   
+  .loading-container{
+    width: 100px;
+    height: 100px;
+    margin: 10px;
+  }
   ion-Icon{
     color: #52B6FF;
     font-size: 20px;
