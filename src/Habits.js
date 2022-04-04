@@ -91,6 +91,7 @@ export default function Habits({ habits }) {
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit, config)
       .then(response => {
         console.log('response', response)
+        setCreateNewHabitContainer(!createNewHabitContainer)
       })
       .catch(error => {
         console.log(error);
@@ -225,6 +226,7 @@ export default function Habits({ habits }) {
                 </h1>
               </div>)
           }
+          <div className='footer-decoy' />
         </>
       </HabitsList>
     )
@@ -408,5 +410,11 @@ const HabitsList = styled.div`
     letter-spacing: 0em;
     text-align: center;
     color: #FFFFFF;
+  }
+  .footer-decoy{
+    height: 84px;
+    width: 100%;
+    background-color: #E5E5E5;
+    margin:0;
   }
 `
