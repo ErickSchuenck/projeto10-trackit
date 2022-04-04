@@ -16,19 +16,25 @@ export default function TodayHabits() {
   }
   const [todayHabits, setTodayHabits] = useState([])
 
-  function markAsDone(habitId) {
-    console.log('markin habit', habitId)
-    axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
-      }/check`, config)
-  }
-
-  useEffect(() => {
+  function reloadHabits(config) {
     axios.get('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/today', config)
       .then((response) => {
         const { data } = response;
         setTodayHabits(data);
-        console.log(response);
       });
+  }
+
+  function markAsDone(habitId) {
+    console.log('markin habit', habitId)
+    axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
+      }/check`, {}, config)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+    reloadHabits(config)
+  }
+
+  useEffect(() => {
+    reloadHabits(config)
 
   }, [userData]);
 

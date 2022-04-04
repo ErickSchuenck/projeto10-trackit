@@ -29,7 +29,7 @@ export default function Footer() {
       <div className='circle' onClick={() => navigate('/hoje')}>
 
         <CircularProgressbar
-          value={progress.length}
+          value={50}
           text={`Hoje`}
           styles={
             buildStyles({
