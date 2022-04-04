@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useState } from 'react'
 import styled from 'styled-components';
+import UserDataContext from './context/UserDataContext';
 
 const weekdaysDefault = [
   {
@@ -54,6 +55,7 @@ export default function Habits({ habits }) {
   const [myHabits, setMyHabits] = useState([])
   const [nameOfTheHabit, setNameOfTheHabit] = useState('')
   const [myNewHabit, setMyNewHabit] = useState({})
+  const userData = JSON.parse(localStorage.getItem('login'))
 
 
   function saveHabit() {
@@ -64,9 +66,10 @@ export default function Habits({ habits }) {
       days: newHabitDays,
     })
     console.log('aqui', newHabitDays)
+    console.log('o que está sendo enviado', myNewHabit)
     const config = {
       headers: {
-        Authorization: `Bearer ${'AQUI DEVE ENTRAR A TOKEN'}`,
+        Authorization: `Bearer ${userData.token}`,
       }
     }
     axios.post('https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits', myNewHabit, config)
@@ -95,6 +98,9 @@ export default function Habits({ habits }) {
           <div className='my-habits'>
             <h1>
               Meus Hábitos
+              <UserDataContext.Consumer>
+                {value => <>1{value.userContext.name}2</>}
+              </UserDataContext.Consumer>
             </h1>
             <ion-icon
               name="add-circle"

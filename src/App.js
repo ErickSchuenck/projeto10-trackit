@@ -8,9 +8,9 @@ import UserDataContext from "./context/UserDataContext";
 import { useState } from "react";
 
 function App() {
-  const [context, setContext] = useState([])
+  const [userContext, setUserContext] = useState({})
   return (
-    <UserDataContext.Provider value={[context, setContext]}>
+    <UserDataContext.Provider value={{ userContext, setUserContext }}>
       <BrowserRouter>
         <Routes>
           <Route path='/' element={<WelcomeScreen />} />

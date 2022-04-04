@@ -1,16 +1,16 @@
 import React from 'react'
 import styled from 'styled-components';
 import { useState, useEffect, useContext } from 'react'
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios'
 import { Bars } from 'react-loader-spinner'
 import UserDataContext from './context/UserDataContext';
+
 
 const URL = `https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/auth/login`
 
 export default function WelcomeScreen() {
 
-  const [context, setContext] = useContext(UserDataContext);
   const [hidePassword, setHidePassword] = useState(true)
   const [data, setData] = useState(
     {
@@ -22,22 +22,22 @@ export default function WelcomeScreen() {
       token: ''
     }
   )
+  const { setUserContext } = useContext(UserDataContext)
   const [login, setLogin] = useState(
     {
       email: '',
       password: '',
     }
   )
-
+  const navigate = useNavigate()
   function enterApp() {
     axios.post(URL, login)
       .then(response => {
         console.log('response', response)
         setData(response.data);
-        console.log('data', data);
-        setContext(response.data)
-        console.log('context', context)
-        window.open('/habitos', '_self')
+        localStorage.setItem('login', JSON.stringify(response.data.token))
+        setUserContext({ name: response.data.name, image: response.data.image })
+        navigate('/habitos')
       })
 
       .catch(error => {
@@ -84,6 +84,7 @@ export default function WelcomeScreen() {
         <button onClick={() => enterApp()}>
           <h1>Entrar</h1>
         </button>
+
 
         <Link to={'/cadastro'}>
           <h2>Não tem uma conta? Cadastre-se!</h2>

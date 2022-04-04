@@ -1,10 +1,11 @@
 import React from 'react'
 import styled from 'styled-components';
-import 'dayjs/locale/pt-br'
+import dayjs from 'dayjs';
+import 'dayjs/locale/pt';
+dayjs.locale('pt')
 
 export default function TodayHabits() {
 
-  const dayjs = require('dayjs');
   let now = dayjs();
   console.log(now.format('DD/MM/YYYY'));
 

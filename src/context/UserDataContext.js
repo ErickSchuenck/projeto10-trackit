@@ -1,13 +1,12 @@
 import React from 'react'
 
-const defaultUserData = {
-  email: '',
-  id: 0,
+const userContext = {
   image: '',
   name: '',
-  password: '',
-  token: ''
 }
-const UserDataContext = React.createContext(defaultUserData)
+const setUserContext = () => { }
+const defaultUserDataContext = { userContext, setUserContext }
+
+const UserDataContext = React.createContext(defaultUserDataContext)
 
 export default UserDataContext;
