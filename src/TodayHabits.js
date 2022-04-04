@@ -33,6 +33,15 @@ export default function TodayHabits() {
     reloadHabits(config)
   }
 
+  function markAsUndone(habitId) {
+    console.log('markin habit', habitId)
+    axios.post(`https://mock-api.bootcamp.respondeai.com.br/api/v2/trackit/habits/${habitId
+      }/uncheck`, {}, config)
+      .then(response => console.log(response))
+      .catch(error => console.log(error))
+    reloadHabits(config)
+  }
+
   useEffect(() => {
     reloadHabits(config)
 
@@ -65,12 +74,22 @@ export default function TodayHabits() {
             <h2>Sequência atual: {habit.currentSequence}</h2>
             <h2>Seu recorde: {habit.highestSequence}</h2>
           </div>
-          <div className={`checkbox ${habit.done ? 'selected' : ''}`}
+          {/* <div className={`checkbox ${habit.done ? 'selected' : ''}`}
             onClick={() => markAsDone(habit.id)}
           >
             <ion-icon name="checkmark-outline" />
-          </div>
-        </div>
+          </div> */}
+          {habit.done ?
+            <div className='checkbox selected'
+              onClick={() => markAsUndone(habit.id)}>
+              <ion-icon name="checkmark-outline" />
+            </div>
+            :
+            <div className='checkbox'
+              onClick={() => markAsDone(habit.id)}>
+              <ion-icon name="checkmark-outline" />
+            </div>}
+        </div >
       ))
     }
   }
